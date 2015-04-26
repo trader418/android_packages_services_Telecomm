@@ -275,6 +275,9 @@ public class TelecomService extends Service {
 
         @Override
         public PhoneAccount getPhoneAccount(PhoneAccountHandle accountHandle) {
+            if (accountHandle == null) {
+              return null;
+            }
             try {
                 if (!isVisibleToCaller(accountHandle)) {
                     Log.w(this, "%s is not visible for the calling user", accountHandle);
