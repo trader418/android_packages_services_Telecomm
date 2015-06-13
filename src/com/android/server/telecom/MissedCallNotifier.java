@@ -146,24 +146,12 @@ class MissedCallNotifier extends CallsManagerListenerBase {
 
         // Create the notification.
         Notification.Builder builder = new Notification.Builder(mContext);
-        if (Settings.System.getInt(mContext.getContentResolver(),
-               Settings.System.KEY_MISSED_CALL_BREATH, 0) == 1) {
-             builder.setSmallIcon(R.drawable.stat_notify_missed_call_breath)
+        builder.setSmallIcon(android.R.drawable.stat_notify_missed_call)
                 .setColor(mContext.getResources().getColor(R.color.theme_color))
                 .setWhen(call.getCreationTimeMillis())
                 .setContentIntent(createCallLogPendingIntent())
                 .setAutoCancel(true)
                 .setDeleteIntent(createClearMissedCallsPendingIntent());
-             } else {
-             builder.setSmallIcon(android.R.drawable.stat_notify_missed_call)
-                .setColor(mContext.getResources().getColor(R.color.theme_color))
-                .setWhen(call.getCreationTimeMillis())
-                .setContentTitle(mContext.getText(titleResId))
-                .setContentText(expandedText)
-                .setContentIntent(createCallLogPendingIntent())
-                .setAutoCancel(true)
-                .setDeleteIntent(createClearMissedCallsPendingIntent());
-             }
 
         // display the first line of the notification:
         // 1 missed call: call name
