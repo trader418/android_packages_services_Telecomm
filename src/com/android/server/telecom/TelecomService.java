@@ -306,7 +306,7 @@ public class TelecomService extends Service {
             try {
                 List<PhoneAccount> allPhoneAccounts = mPhoneAccountRegistrar.getAllPhoneAccounts();
                 List<PhoneAccount> profilePhoneAccounts = new ArrayList<>(allPhoneAccounts.size());
-                for (PhoneAccount phoneAccount : profilePhoneAccounts) {
+                for (PhoneAccount phoneAccount : allPhoneAccounts) {
                     if (isVisibleToCaller(phoneAccount)) {
                         profilePhoneAccounts.add(phoneAccount);
                     }
