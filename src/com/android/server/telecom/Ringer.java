@@ -200,14 +200,13 @@ final class Ringer extends CallsManagerListenerBase {
             // The foreground call is one of incoming calls so play the ringer out loud.
             stopCallWaiting(call);
 
-            boolean[] shouldRingOrVibrate =
-                    shouldRingOrVibrateForContact(foregroundCall.getContactUri());
-            boolean ringAllowed = shouldRingOrVibrate[0];
-            boolean vibrationAllowed = shouldRingOrVibrate[1];
+            if (!shouldRingForContact(foregroundCall.getContactUri())) {
+                return;
+            }
 
             AudioManager audioManager =
                     (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
-            if (ringAllowed && audioManager.getStreamVolume(AudioManager.STREAM_RING) >= 0) {
+            if (audioManager.getStreamVolume(AudioManager.STREAM_RING) >= 0) {
                 if (mState != STATE_RINGING) {
                     Log.event(call, Log.Events.START_RINGER);
                     mState = STATE_RINGING;
@@ -246,7 +245,7 @@ final class Ringer extends CallsManagerListenerBase {
                 Log.v(this, "startRingingOrCallWaiting, skipping because volume is 0");
             }
 
-            if (vibrationAllowed && shouldVibrate(mContext) && !mIsVibrating) {
+            if (shouldVibrate(mContext) && !mIsVibrating) {
                 mVibrator.vibrate(VIBRATION_PATTERN, VIBRATION_PATTERN_REPEAT,
                         VIBRATION_ATTRIBUTES);
                 mIsVibrating = true;
@@ -275,7 +274,7 @@ final class Ringer extends CallsManagerListenerBase {
         }
     }
 
-    private boolean[] shouldRingOrVibrateForContact(Uri contactUri) {
+    private boolean shouldRingForContact(Uri contactUri) {
         final NotificationManager manager =
                 (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
         final Bundle extras = new Bundle();
